@@ -1,0 +1,23 @@
+---
+create:
+
+        gri:	''
+        login:	'client'
+        layer:	'2'
+
+        src:	'urn:ogf:network:domain=es.net:node=PNWG:port=port-1:link=link1'
+        dst:	'urn:ogf:network:domain=es.net:node=DENV:port=port-4:link=link1'
+
+        bandwidth:	20
+
+        description:	'a timer-automatic reservation'
+
+        start-time:	'2015-04-00 02:04'
+        end-time:	'2015-04-00 02:10'
+
+        path-setup-mode:	'timer-automatic'
+
+        path-type:	'strict'
+
+        srcvlan:	'any'
+        dstvlan:	'any'

@@ -1,0 +1,23 @@
+---
+create:
+
+        gri:	''
+        login:	'client'
+        layer:	'2'
+
+        src:	'urn:ogf:network:domain=es.net:node=NEWY:port=port-1:link=link1'
+        dst:	'urn:ogf:network:domain=es.net:node=anycast(DENV-1,AOFA-5,NASH-4,ALBU-2,SUNN-5):port=anycast:link=link1'
+
+        bandwidth:	10
+
+        description:	'a timer-automatic reservation'
+
+        start-time:	'now'
+        end-time:	'+00:00:04'
+
+        path-setup-mode:	'timer-automatic'
+
+        path-type:	'strict'
+
+        srcvlan:	'any'
+        dstvlan:	'any'

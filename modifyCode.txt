@@ -1,0 +1,150 @@
+In main()
+
+window.frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Should maximize the window but not cover the taskbar
+
+
+=====
+
+
+
+protected void modifyReservation() 
+	{
+		Object griSelected = griTree.getLastSelectedPathComponent();
+	
+		if(griSelected == null)
+		{
+			return;
+		}
+		
+		createButton.setEnabled(false);
+		resetDemoButton.setEnabled(false);
+		cancelResButton.setEnabled(false);
+		
+		String griSelectedString = griSelected.toString();
+		
+		if(!outputConsole.getText().contains("ACTIVE") && !outputConsole.getText().contains("RESERVED"))
+		{
+				JOptionPane.showMessageDialog(frame,"Inactive reservations cannot be modified!");
+				handleGriTree();
+				cancelResButton.setEnabled(true);
+				modifyResButton.setEnabled(true);
+				createButton.setEnabled(true);
+				resetDemoButton.setEnabled(true);
+				griTree.setSelectionPath(null);
+				return;
+		}
+		
+		Object options[];
+		// Pop-up dialog //
+		if(griSelectedString.contains("MP-"))
+			options = new Object[]{"Add New Path to Group", "Never Mind"};
+		else
+			options = new Object[]{"Add New Path to Group", "Remove Path from Group"};
+		
+		int choice = JOptionPane.showOptionDialog(frame, "How would you like to modify \'" + griSelectedString + "\'?", "Modify Reservation?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[1]);
+		
+		if(choice == 0)
+		{
+			outputConsole.setText("Attempting to create new reservation...");
+			String groupGRI = mpUIController.addToGroup(griSelectedString);
+			
+			if(groupGRI.equals("IMPOSSIBLE"))
+			{
+				JOptionPane.showMessageDialog(frame,"Current network state does not support adding an additional disjoint reservation to " + griSelectedString + "!");
+				groupGRI = griSelectedString;
+			}
+			else if(!griSelectedString.contains("MP-"))
+			{
+				outputConsole.setText("Reservation \'" + griSelectedString + "\' and new path added to new group \'" + groupGRI + "\'.");
+			}
+			else
+			{
+				outputConsole.setText("New path added to group \'" + groupGRI + "\'.");
+			}
+						
+			handleGriTree();
+					
+		}
+		else if((choice == 1) && (griSelectedString.contains("MP-")))
+		{
+			handleGriTree();
+			cancelResButton.setEnabled(true);
+			modifyResButton.setEnabled(true);
+			createButton.setEnabled(true);
+			resetDemoButton.setEnabled(true);
+			griTree.setSelectionPath(null);
+			return;
+		}
+		else if(choice == 1)
+		{
+			BufferedReader br = null;
+			boolean isPartOfMPGroup = false;
+			String whichMPGroup = null;
+			String line = null;
+			
+			try 
+			{
+				br = new BufferedReader(new FileReader("mp_gri_lookup.txt"));
+				while((line = br.readLine()) != null)
+				{
+					if(line.contains(griSelectedString))
+					{
+						isPartOfMPGroup = true;
+						String[] groupDecomp = line.split("_=_"); 
+						whichMPGroup = groupDecomp[0];
+						System.out.println(whichMPGroup);
+						break;
+					}
+				}
+				
+		        br.close();
+			} 
+			catch (FileNotFoundException e) { e.printStackTrace(); } 
+			catch (IOException e) {	e.printStackTrace(); }
+			
+			if(!isPartOfMPGroup)
+			{
+				JOptionPane.showMessageDialog(frame, griSelectedString + " does not belong to a Multipath group, and cannot be removed!");
+				
+				handleGriTree();
+				cancelResButton.setEnabled(true);
+				modifyResButton.setEnabled(true);
+				createButton.setEnabled(true);
+				resetDemoButton.setEnabled(true);
+				griTree.setSelectionPath(null);
+				return;
+			}
+			else
+			{
+				Object options2[] = {"Remove", "Cancel"};	
+			
+				int choice2 = JOptionPane.showOptionDialog(frame, "WARNING! Removing \'" + griSelectedString + "\' from group \'" + whichMPGroup + "\' will not cancel the reservation in OSCARS. Would you like to proceed with removal?", "WARNING!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options2, options2[1]);
+			
+				if(choice2 == 1)
+				{
+					handleGriTree();
+					cancelResButton.setEnabled(true);
+					modifyResButton.setEnabled(true);
+					createButton.setEnabled(true);
+					resetDemoButton.setEnabled(true);
+					griTree.setSelectionPath(null);
+					return;	
+				}
+				else
+				{
+					outputConsole.setText("Attempting to remove reservation from group...");
+					
+					String groupGRI = mpUIController.subFromGroup(whichMPGroup, griSelectedString);
+			
+					outputConsole.setText("Removal operation complete.");
+				}
+			}
+		}
+		
+		handleGriTree();
+		cancelResButton.setEnabled(true);
+		modifyResButton.setEnabled(true);
+		createButton.setEnabled(true);
+		resetDemoButton.setEnabled(true);
+		griTree.setSelectionPath(null);
+	}

@@ -1,0 +1,25 @@
+---
+create:
+
+        gri:	''
+        login:	'client'
+        layer:	'2'
+
+        src:	'urn:ogf:network:domain=es.net:node=AOFA:port=port-1:link=link1'
+        dst:	'urn:ogf:network:domain=es.net:node=SUNN:port=port-5:link=link1'
+        
+        disjoint-paths: 3
+
+        bandwidth:	20
+
+        description:	'a timer-automatic reservation'
+
+        start-time:	'2015-04-00 01:04'
+        end-time:	'2015-04-00 01:05'
+
+        path-setup-mode:	'timer-automatic'
+
+        path-type:	'strict'
+
+        srcvlan:	'any'
+        dstvlan:	'any'

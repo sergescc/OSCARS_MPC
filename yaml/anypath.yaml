@@ -1,0 +1,25 @@
+---
+create:
+
+        gri:	''
+        login:	'client'
+        layer:	'2'
+
+        src:	'urn:ogf:network:domain=es.net:node=CLEV:port=port-1:link=link1'
+        dst:	'urn:ogf:network:domain=es.net:node=anycast(ELPA-3,DENV-4,PNWG-4,SUNN-5):port=anycast:link=link1'
+
+        disjoint-paths: 6
+
+        bandwidth:	20
+
+        description:	'a timer-automatic reservation'
+
+        start-time:	'2015-04-00 03:04'
+        end-time:	'2015-04-00 03:10'
+
+        path-setup-mode:	'timer-automatic'
+
+        path-type:	'strict'
+
+        srcvlan:	'any'
+        dstvlan:	'any'

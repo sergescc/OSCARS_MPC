@@ -1,0 +1,25 @@
+---
+create:
+
+        gri:	''
+        login:	'client'
+        layer:	'2'
+
+        src:	'urn:ogf:network:domain=es.net:node=DENV:port=port-3:link=link1'
+        dst:	'urn:ogf:network:domain=es.net:node=KANS:port=port-3:link=link1'
+        
+        disjoint-paths: 2
+
+        bandwidth:	2000
+
+        description:	'a timer-automatic reservation'
+
+        start-time:	'2015-04-00 01:04'
+        end-time:	'2015-04-00 01:05'
+
+        path-setup-mode:	'timer-automatic'
+
+        path-type:	'strict'
+
+        srcvlan:	'any'
+        dstvlan:	'any'
